@@ -8,9 +8,13 @@ import pandas as pd
 import plotly.express as px
 import textwrap
 from concurrent.futures import ThreadPoolExecutor
+from streamlit.elements.lib.layout_utils import Height
+from streamlit_mermaid import st_mermaid
+import streamlit.components.v1 as components
 
-from utils import chunk_text
+from utils import chunk_text, remove_mermaid_fences
 from semantic_scoring import get_cosine_scores
+from mermaid import generate_mermaid
 
 
 @st.cache_data
@@ -126,3 +130,20 @@ if uploaded_file is not None:
 
         st.success("Chart is generated successfully!")
         st.info("Above chart gives the trnds in the Sentiment")
+
+if uploaded_file is not None:
+    with st.spinner("Generating Mind Map..."):
+    
+        st.subheader("Mind Map Generation")
+
+        mermaid = str(generate_mermaid(content=content))
+        mermaid = remove_mermaid_fences(mermaid)
+        print(mermaid)
+        st.markdown(f"""
+        <div style=" overflow: auto;">
+            <script type="text/javascript">
+                {st_mermaid(mermaid)}  # pyright: ignore[reportArgumentType]
+            </script>
+        </div>
+        """, unsafe_allow_html=True)
+
