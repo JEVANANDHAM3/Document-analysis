@@ -70,7 +70,7 @@ if uploaded_file is not None:
     with st.expander("Click to view the document's content"):
         st.text_area("Content", content, height=400)
         
-    st.info("Next steps: Now that the content is loaded, you can pass the 'content' variable to your analysis functions (Sentiment, Frequency, etc.).")
+    st.info("You can now use Multi-trend analysis,Mind map generation, Frequency analysis and Clustering document")
 else:
     st.warning("Please upload a document to get started.")
 
@@ -129,21 +129,20 @@ if uploaded_file is not None:
         st.plotly_chart(fig, use_container_width=True)
 
         st.success("Chart is generated successfully!")
-        st.info("Above chart gives the trnds in the Sentiment")
 
 if uploaded_file is not None:
-    with st.spinner("Generating Mind Map..."):
-    
-        st.subheader("Mind Map Generation")
-
-        mermaid = str(generate_mermaid(content=content))
-        mermaid = remove_mermaid_fences(mermaid)
-        print(mermaid)
-        st.markdown(f"""
-        <div style=" overflow: auto;">
-            <script type="text/javascript">
-                {st_mermaid(mermaid)}  # pyright: ignore[reportArgumentType]
-            </script>
-        </div>
-        """, unsafe_allow_html=True)
+    st.subheader("Mind Map Generation")
+    if st.button("Generate Mind Map"):
+        with st.spinner("Generating Mind Map..."):
+            mermaid = str(generate_mermaid(content=content))
+            mermaid = remove_mermaid_fences(mermaid)
+            print(mermaid)
+            st.markdown(f"""
+            <div style=" overflow: auto;">
+                <script type="text/javascript">
+                    {st_mermaid(mermaid)}  # pyright: ignore[reportArgumentType]
+                </script>
+            </div>
+            """, unsafe_allow_html=True)
+        st.success("Mind map is generated successfully!")
 

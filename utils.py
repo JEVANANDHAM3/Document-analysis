@@ -1,6 +1,8 @@
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 import re
+import streamlit as st
 
+@st.cache_data
 def chunk_text(text:str,chunk_size:int = 10, chunk_overlap:int = 3) -> list[str]:
 
     text_splitter = RecursiveCharacterTextSplitter(
@@ -13,7 +15,7 @@ def chunk_text(text:str,chunk_size:int = 10, chunk_overlap:int = 3) -> list[str]
 
     return chunks
 
-
+@st.cache_data
 def remove_mermaid_fences(text: str) -> str:
     """
     Remove the ```mermaid fences from a string, keeping the content inside.
