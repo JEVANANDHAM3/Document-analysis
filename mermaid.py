@@ -1,4 +1,4 @@
-from google import genai
+import google.generativeai as genai
 from dotenv import load_dotenv
 import os
 import streamlit as st
@@ -28,13 +28,8 @@ def generate_mermaid(content:str,api_key:str=gemini_api_key):
     Output:
     """
 
-
-
-    client = genai.Client(api_key=api_key)
-
-    response = client.models.generate_content(
-        model="gemini-2.5-flash-lite",
-        contents=prompt
-    )
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel("gemini-2.5-flash")
+    response = model.generate_content(prompt)
 
     return response.text
